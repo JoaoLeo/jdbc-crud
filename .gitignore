@@ -77,5 +77,7 @@ fabric.properties
 
 jdbc-crud.iml
 
+.idea
+
 # Configuração de banco
 db.properties
