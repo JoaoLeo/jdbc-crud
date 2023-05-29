@@ -15,14 +15,13 @@ public class DBTest {
     @Test
     void testConnection(){
         System.out.println("Abrindo conexão");
-        Connection conn = DB.connect();
-        assert (conn != null);
+        assert (DB.connect() != null);
     }
 
     @Test
     void loadProperties(){
         System.out.println("Abrindo conexão");
-        Connection conn = DB.connect();
+        DB.connect();
         System.out.println("Validando propriedades do banco");
         Properties p = DB.loadProperties();
         System.out.println("Propriedades: " + p.toString());
