@@ -1,0 +1,7 @@
+//adicione aqui sua configuração de banco para rodar o projeto
+//rodar em local host porta 3306
+//apos configurar esse arquivo apagar o ".copy" para que ele vira um arquivo env local
+user=
+password=
+dburl=
+useSSL=false
