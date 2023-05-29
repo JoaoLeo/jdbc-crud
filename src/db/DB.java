@@ -34,7 +34,7 @@ public class DB {
         }
     }
     // lê o arquivo db.properties que esta na raiz e carrega pro objeto properties
-    private static Properties loadProperties(){
+    protected static Properties loadProperties(){
         try(FileInputStream fs = new FileInputStream("db.properties")){
             Properties properties = new Properties();
             properties.load(fs);
