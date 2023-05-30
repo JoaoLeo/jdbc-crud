@@ -42,4 +42,18 @@ public class VendedorDaoTest {
         System.out.println(v2.toString());
         assert (v2 != null);
     }
+
+    @Test
+    void update(){
+        Vendedor v = vendedorDao.findById(8);
+        v.setNome("João ");
+        v.setEmail("teste@gmail.com");
+        v.setDtAniversario(new Date());
+        v.setSalarioBase(660.0);
+        v.setDepartamento(departamentoDao.findById(2));
+        vendedorDao.update(v);
+        Vendedor v2 = vendedorDao.findById(8);
+        System.out.println(v2.toString());
+        assert (v.equals(v2)); //Se for true que dizer que o objeto foi alterado no banco de acordo com os sets acima
+    }
 }
