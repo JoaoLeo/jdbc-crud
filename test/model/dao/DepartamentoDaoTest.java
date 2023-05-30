@@ -1,12 +1,8 @@
 package model.dao;
 
 import model.entities.Departamento;
-import model.entities.Vendedor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-;
-
-import java.util.Date;
 import java.util.List;
 
 public class DepartamentoDaoTest {
@@ -36,8 +32,8 @@ public class DepartamentoDaoTest {
         System.out.println(d);
         assert (departamentoDao.findById(d.getId()) != null);
     }
-        @Test
-        void update(){
+    @Test
+    void update(){
             Departamento d= departamentoDao.findById(3);
             d.setNome("backend");
             departamentoDao.update(d);
@@ -45,4 +41,11 @@ public class DepartamentoDaoTest {
             System.out.println(d2.toString());
             assert (d.equals(d2)); //Se for true que dizer que o objeto foi alterado no banco de acordo com os sets acima
         }
+    @Test
+    void delete(){
+        int idParaDeletar = 4;
+        System.out.println("Deletando registro de numero " + idParaDeletar);
+        departamentoDao.delete(idParaDeletar);
+        assert (departamentoDao.findById(idParaDeletar) == null);
+    }
     }

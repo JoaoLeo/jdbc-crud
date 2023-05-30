@@ -4,13 +4,9 @@ import db.DB;
 import db.DbException;
 import model.dao.DepartamentoDao;
 import model.entities.Departamento;
-import model.entities.Vendedor;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DepartamentoDaoJDBC  implements DepartamentoDao {
     private Connection conn;
@@ -88,7 +84,17 @@ public class DepartamentoDaoJDBC  implements DepartamentoDao {
 
     @Override
     public void delete(Integer id) {
-
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("delete from departamento " +
+                    "where id = ?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException err){
+            throw new DbException(err.getMessage());
+        } finally{
+            DB.closeStatement(st);
+        }
     }
 
     @Override
