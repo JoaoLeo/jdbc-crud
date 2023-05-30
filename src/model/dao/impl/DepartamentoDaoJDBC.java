@@ -6,10 +6,7 @@ import model.dao.DepartamentoDao;
 import model.entities.Departamento;
 import model.entities.Vendedor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +44,27 @@ public class DepartamentoDaoJDBC  implements DepartamentoDao {
 
     @Override
     public void insert(Departamento d) {
-
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+                    " insert into departamento (Nome) " +
+                            " values(?)", Statement.RETURN_GENERATED_KEYS);
+            st.setString(1,d.getNome());
+            int linhas = st.executeUpdate();
+            if(linhas > 0){
+                ResultSet rs = st.getGeneratedKeys();
+                if(rs.next()){
+                    int id = rs.getInt(1);
+                    d.setId(id);
+                }
+                DB.closeResultSet(rs);
+            }
+            else{
+                throw new DbException("Erro inesperado");
+            }
+        } catch (SQLException err) {
+            throw new DbException(err.getMessage());
+        }
     }
 
     @Override
