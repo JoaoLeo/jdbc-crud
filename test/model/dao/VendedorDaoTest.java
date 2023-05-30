@@ -56,4 +56,12 @@ public class VendedorDaoTest {
         System.out.println(v2.toString());
         assert (v.equals(v2)); //Se for true que dizer que o objeto foi alterado no banco de acordo com os sets acima
     }
+
+    @Test
+    void delete(){
+        int idParaDeletar = 9;
+        System.out.println("Deletando registro de numero " + idParaDeletar);
+        vendedorDao.delete(idParaDeletar);
+        assert (vendedorDao.findById(idParaDeletar) == null);
+    }
 }
