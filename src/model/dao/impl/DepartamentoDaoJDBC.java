@@ -49,9 +49,7 @@ public class DepartamentoDaoJDBC  implements DepartamentoDao {
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                Departamento d = new Departamento();
-                d.setId(rs.getInt("Id"));
-                d.setNome(rs.getString("Nome"));
+                Departamento d = instanciaDepartamento(rs);
                 return d;
             }
 
@@ -62,5 +60,12 @@ public class DepartamentoDaoJDBC  implements DepartamentoDao {
             DB.closeResultSet(rs);
         }
         return null;
+    }
+
+    private Departamento instanciaDepartamento(ResultSet rs) throws SQLException {
+        Departamento d = new Departamento();
+        d.setId(rs.getInt("Id"));
+        d.setNome(rs.getString("Nome"));
+        return d;
     }
 }
