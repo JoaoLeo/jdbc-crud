@@ -6,10 +6,7 @@ import model.dao.VendedorDao;
 import model.entities.Departamento;
 import model.entities.Vendedor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +54,31 @@ public class VendedorDaoJDBC implements VendedorDao {
 
     @Override
     public void insert(Vendedor v) {
-
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+                   " insert into vendedor (Nome,Email,DtAniversario,salarioBase,DepartamentoId) " +
+                    " values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            st.setString(1,v.getNome());
+            st.setString(2,v.getEmail());
+            st.setDate(3, new Date(v.getDtAniversario().getTime()));
+            st.setDouble(4, v.getSalarioBase());
+            st.setInt(5, v.getDepartamento().getId());
+            int linhas = st.executeUpdate();
+            if(linhas > 0){
+                ResultSet rs = st.getGeneratedKeys();
+                if(rs.next()){
+                    int id = rs.getInt(1);
+                    v.setId(id);
+                }
+                DB.closeResultSet(rs);
+            }
+            else{
+                throw new DbException("Erro inesperado");
+            }
+        } catch (SQLException err) {
+            throw new DbException(err.getMessage());
+        }
     }
 
     @Override
