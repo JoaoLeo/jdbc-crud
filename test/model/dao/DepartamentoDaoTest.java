@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.entities.Departamento;
+import model.entities.Vendedor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,5 +19,11 @@ public class DepartamentoDaoTest {
         Departamento d =  departamentoDao.findById(4);
         System.out.println("Departamento: " + d.toString());
         assert (d != null);
+    }
+    @Test
+    void getAll(){
+        List<Departamento> d = departamentoDao.getAll();
+        System.out.println(d.toString());
+        assert(d.size() > 0);
     }
 }
