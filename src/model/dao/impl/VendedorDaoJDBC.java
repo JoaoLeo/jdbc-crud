@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VendedorDaoJDBC implements VendedorDao {
     private Connection conn;
@@ -21,8 +24,36 @@ public class VendedorDaoJDBC implements VendedorDao {
 
     @Override
     public List<Vendedor> getAll() {
-        return null;
-    }
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+            st = conn.prepareStatement(
+                    "SELECT vendedor.*,departamento.Nome as DepName " +
+                            " FROM vendedor INNER JOIN departamento" +
+                            " ON vendedor.DepartamentoId = departamento.Id"
+            );
+            rs = st.executeQuery();
+            List<Vendedor> vendedores = new ArrayList<>();
+            Map<Integer, Departamento> map = new HashMap<>();
+            while(rs.next()){
+
+                Departamento d = map.get(rs.getInt("departamentoId"));
+                if(d == null) {
+                    d = instanciaDepartamento(rs);
+                    map.put(rs.getInt("DepartamentoId"), d);
+                }
+                Vendedor v = instanciaVendedor(rs,d);
+                vendedores.add(v);
+                }
+            return vendedores;
+            } catch (SQLException err){
+                throw new DbException(err.getMessage());
+        } finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+        }
+
 
     @Override
     public void insert(Vendedor v) {
