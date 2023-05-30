@@ -69,7 +69,21 @@ public class DepartamentoDaoJDBC  implements DepartamentoDao {
 
     @Override
     public void update(Departamento d) {
-
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "update departamento " +
+                            " set Nome = ?" +
+                            " where Id = ? ");
+            st.setString(1,d.getNome());
+            st.setInt(2,d.getId());
+            st.executeUpdate();
+        }catch (SQLException err){
+            throw new DbException(err.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
